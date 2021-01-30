@@ -1,0 +1,10 @@
+[Unit]
+Description=Phone home if IP has changed
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/weetee
+
+[Install]
+WantedBy=basic.target
+

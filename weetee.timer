@@ -1,0 +1,10 @@
+[Unit]
+Description=Run weetee every 10 minutes
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=10min
+Unit=weetee.service
+
+[Install]
+WantedBy=timers.target
