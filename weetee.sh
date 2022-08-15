@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 script_dir="${0%/*}"
 
 . $script_dir/.env
