@@ -22,6 +22,7 @@ Weetee is configured in the `.env` filem which should be placed in the script's 
 EMAIL={{email}}
 TEMPLATE={{template-path}}
 WHAT_IS_MY_IP_ENDPOINT={{endpoint}}
+[IGNORE_EMPTY_NEW_IP=true]
 ```
 
 When run, weetee will ask `{{endpoint}}` for the external IP, a `GET` request, eg. `curl -s {{endpoint}}` should result in an ip (only) eg. `1.2.3.4`. It will then compare this, current, IP with the ip in `old.ip` (if it exists). If the current IP is not the same as the old IP weetee sends an email to `{{email}}` with the content's of the file at `{{template-path}}`. The template file should look like:
@@ -33,6 +34,13 @@ Subject: {{subject}}
 ```
 
 The `{{subject}}` and `{{body}}` should be defined by the user. To add the new and/or old IP to the email add `{{old-ip}}` and/or `{{new-ip}}` somehwere in the template. **Note** the space between the subject and the body.
+
+If the new ip is empty this likely means that the script cannot reach the
+`WHAT_IS_MY_IP_ENDPOINT`, this can have multiple casuse, like the service being
+down the router being turned off. If this happens regularly (for eaxmple
+regular restarts of the network router) we can choose to ignore it by setting
+`IGNORE_EMPTY_NEW_IP` (to anything, if it's there it will be regarded as true).
+Omit the variable if you want the default behavior.
 
 ## Example
 

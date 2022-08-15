@@ -7,6 +7,7 @@ script_dir="${0%/*}"
 old_ip_file="$script_dir/old.ip"
 
 new_ip=$(curl -s $WHAT_IS_MY_IP_ENDPOINT)
+new_ip=$(echo $new_ip | xargs echo -n)
 
 old_ip="-"
 if [ -e $old_ip_file ]; then
@@ -14,8 +15,8 @@ if [ -e $old_ip_file ]; then
 fi
 
 if [ "$new_ip" != "$old_ip" ]; then
-    sed -e "/{{old-ip}}/s/{{old-ip}}/$old_ip/g" -e "/{{new-ip}}/s/{{new-ip}}/$new_ip/g" $TEMPLATE | sendmail $EMAIL
+    if [ -n "$new_ip" ] || [ -z "$IGNORE_EMPTY_NEW_IP" ]; then
+        sed -e "/{{old-ip}}/s/{{old-ip}}/$old_ip/g" -e "/{{new-ip}}/s/{{new-ip}}/$new_ip/g" $TEMPLATE | sendmail $EMAIL
+        echo "$new_ip" >$old_ip_file
+    fi
 fi
-
-echo "$new_ip" > $old_ip_file
-
