@@ -4,11 +4,13 @@ Will send an email when the external IP of the machine where it's running change
 
 ## Dependencies
 
-* `sendmail`
-* `curl`
-* `sed`
+- `sendmail` or at least a SMTP client with an alias to `sendmail`
+  - if you can run `echo "Subject: Test" | sendmail <YOUR_EMAIL>` you should be
+    set. See note below.
+- `curl`
+- `sed`
 
-The system should have a default email account configured so `sendmail` can send the email, you might need to install `msmtp` and `msmtp-mta` and configure the account in `/etc/msmtprc`. Verify that the following works, using your own email:
+**NOTE:** The system should have a default email account configured so `sendmail` can send the email, you might need to install `msmtp` and `msmtp-mta` and configure the account in `/etc/msmtprc`. Verify that the following works, using your own email:
 
 ```
 echo "Subject: Test" | sendmail email@example.com
@@ -33,7 +35,7 @@ Subject: {{subject}}
 {{body}}
 ```
 
-The `{{subject}}` and `{{body}}` should be defined by the user. To add the new and/or old IP to the email add `{{old-ip}}` and/or `{{new-ip}}` somehwere in the template. **Note** the space between the subject and the body.
+The `{{subject}}` and `{{body}}` should be defined by the user. To add the new and/or old IP to the email add `{{old-ip}}` and/or `{{new-ip}}` somehwere in the template. **Note the space between the subject and the body**.
 
 If the new ip is empty this likely means that the script cannot reach the
 `WHAT_IS_MY_IP_ENDPOINT`, this can have multiple casuse, like the service being
@@ -83,4 +85,3 @@ timer:
 cp weetee.service weetee.timer /usr/lib/systemd/system/
 systemctl enable weetee.timer --now
 ```
-
